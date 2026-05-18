@@ -48,3 +48,9 @@ BaseLayout.astro      ← HTML shell、ヘッダー・フッター・グロー�
 ### パスエイリアス
 
 `jest.config.cjs` で `@components/`, `@layouts/`, `@utils/` が設定済み（テスト用）。
+
+## 運用方針
+
+- 記事は Hermes ジョブが Discord 技術トピックをもとに毎日生成し、外部から push して運用する。
+- `daily-content-generation.yml` は無効化済み（`.disabled` 拡張子）。記事生成は Hermes 側で管理。
+- このリポジトリへの実装変更は Hermes/Codex が Claude Code を統制して行う。
