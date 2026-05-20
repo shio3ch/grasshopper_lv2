@@ -23,13 +23,9 @@ const {
 
 <BaseLayout title={title} description={description}>
   <article>
-    <header style="margin-bottom:2rem;">
-      <h1
-        style="font-size:2rem;font-weight:700;line-height:1.3;margin-bottom:0.75rem;"
-      >
-        {title}
-      </h1>
-      <p style="color:#555;font-size:0.95rem;margin-bottom:0.5rem;">
+    <header class="article-header">
+      <h1 class="article-header__title">{title}</h1>
+      <p class="article-header__meta">
         <time datetime={toISODateString(pubDate)}>{formatDate(pubDate)}</time>
         {
           updatedDate && (
@@ -45,11 +41,9 @@ const {
       </p>
       {
         tags.length > 0 && (
-          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+          <div class="article-header__tags">
             {tags.map((tag) => (
-              <span style="background:#eef2ff;color:#3730a3;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.8rem;">
-                #{tag}
-              </span>
+              <span class="article-header__tag">#{tag}</span>
             ))}
           </div>
         )
@@ -60,25 +54,67 @@ const {
       <slot />
     </div>
 
-    <div
-      style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid #eaeaea;"
-    >
-      <a href="/" style="color:#0070f3;">&larr; 記事一覧に戻る</a>
+    <div class="article-footer">
+      <a href="/">&larr; 記事一覧に戻る</a>
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .article-header {
+    margin-bottom: 2rem;
+  }
+
+  .article-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  .article-header__meta {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .article-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .article-header__tag {
+    background: var(--color-tag-bg);
+    color: var(--color-tag-text);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .article-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    transition: border-color 0.2s ease;
+  }
+</style>
 
 <style is:global>
   .prose h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 2rem 0 1rem;
+    color: var(--color-text);
   }
 
   .prose h3 {
     font-size: 1.25rem;
     font-weight: 700;
     margin: 1.5rem 0 0.75rem;
+    color: var(--color-text);
   }
 
   .prose p {
@@ -105,14 +141,15 @@ const {
   }
 
   .prose code:not(pre code) {
-    background: #f0f0f0;
+    background: var(--color-code-inline-bg);
     padding: 0.15rem 0.4rem;
     border-radius: 0.25rem;
     font-size: 0.9em;
+    transition: background-color 0.2s ease;
   }
 
   .prose a {
-    color: #0070f3;
+    color: var(--color-link);
   }
 
   .prose strong {

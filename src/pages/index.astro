@@ -10,16 +10,12 @@ const posts = (await getCollection("blog")).sort(
 
 <BaseLayout title="ホーム" description="grasshopper - tech news blog">
   <section>
-    <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;">
-      技術ニュース
-    </h1>
-    <p style="color:#555;margin-bottom:2rem;">
-      最新の技術トレンドやニュースをお届けします。
-    </p>
+    <h1 class="page-title">技術ニュース</h1>
+    <p class="page-subtitle">最新の技術トレンドやニュースをお届けします。</p>
 
     {
       posts.length === 0 ? (
-        <p style="color:#888;">記事がありません。</p>
+        <p class="empty-message">記事がありません。</p>
       ) : (
         posts.map((post) => (
           <PostCard
@@ -34,3 +30,21 @@ const posts = (await getCollection("blog")).sort(
     }
   </section>
 </BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .page-subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .empty-message {
+    color: var(--color-text-dimmed);
+  }
+</style>

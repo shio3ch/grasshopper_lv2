@@ -15,7 +15,49 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
     <meta name="description" content={description} />
     <title>{title} | grasshopper</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = stored ?? (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
     <style>
+      :root {
+        --color-bg: #f9f9f9;
+        --color-bg-card: #ffffff;
+        --color-bg-header: #ffffff;
+        --color-border: #eaeaea;
+        --color-text: #1a1a1a;
+        --color-text-muted: #555555;
+        --color-text-dimmed: #888888;
+        --color-text-subtle: #444444;
+        --color-link: #0070f3;
+        --color-tag-bg: #eef2ff;
+        --color-tag-text: #3730a3;
+        --color-code-inline-bg: #f0f0f0;
+        --color-toggle-bg: #e0e0e0;
+        --color-toggle-icon: #555555;
+      }
+
+      [data-theme="dark"] {
+        --color-bg: #111111;
+        --color-bg-card: #1c1c1c;
+        --color-bg-header: #161616;
+        --color-border: #2e2e2e;
+        --color-text: #e6e6e6;
+        --color-text-muted: #999999;
+        --color-text-dimmed: #666666;
+        --color-text-subtle: #bbbbbb;
+        --color-link: #4da3ff;
+        --color-tag-bg: #1e2247;
+        --color-tag-text: #a5b4fc;
+        --color-code-inline-bg: #2a2a2a;
+        --color-toggle-bg: #333333;
+        --color-toggle-icon: #cccccc;
+      }
+
       *,
       *::before,
       *::after {
@@ -28,12 +70,13 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, sans-serif;
         line-height: 1.6;
-        color: #1a1a1a;
-        background: #f9f9f9;
+        color: var(--color-text);
+        background: var(--color-bg);
+        transition: background-color 0.2s ease, color 0.2s ease;
       }
 
       a {
-        color: #0070f3;
+        color: var(--color-link);
         text-decoration: none;
       }
 
@@ -46,21 +89,93 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
         margin: 0 auto;
         padding: 2rem 1rem;
       }
+
+      .site-header {
+        background: var(--color-bg-header);
+        border-bottom: 1px solid var(--color-border);
+        padding: 1rem;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+      }
+
+      .site-header__inner {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .site-header__logo {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--color-text);
+      }
+
+      .site-header__logo:hover {
+        text-decoration: none;
+        opacity: 0.8;
+      }
+
+      .site-header__nav {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .site-header__nav a {
+        color: var(--color-text-muted);
+      }
+
+      .theme-toggle {
+        background: var(--color-toggle-bg);
+        border: none;
+        border-radius: 9999px;
+        width: 2.2rem;
+        height: 2.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.2s ease, transform 0.15s ease;
+        flex-shrink: 0;
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1);
+      }
+
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--color-link);
+        outline-offset: 2px;
+      }
+
+      .site-footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--color-text-dimmed);
+        font-size: 0.875rem;
+        border-top: 1px solid var(--color-border);
+        margin-top: 4rem;
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
     </style>
   </head>
   <body>
-    <header
-      style="background:#fff;border-bottom:1px solid #eaeaea;padding:1rem;"
-    >
-      <div
-        style="max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;"
-      >
-        <a href="/" style="font-size:1.4rem;font-weight:700;color:#1a1a1a;"
-          >🦗 grasshopper</a
-        >
-        <nav>
-          <a href="/" style="margin-left:1.5rem;color:#555;">ホーム</a>
-        </nav>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="/" class="site-header__logo">🦗 grasshopper</a>
+        <div class="site-header__nav">
+          <a href="/">ホーム</a>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="ダークモードの切り替え"
+            title="ダークモードの切り替え"
+          >
+            <span id="theme-toggle-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -68,10 +183,38 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
       <slot />
     </main>
 
-    <footer
-      style="text-align:center;padding:2rem 1rem;color:#888;font-size:0.875rem;border-top:1px solid #eaeaea;margin-top:4rem;"
-    >
+    <footer class="site-footer">
       <p>&copy; {new Date().getFullYear()} grasshopper. All rights reserved.</p>
     </footer>
+
+    <script>
+      const btn = document.getElementById("theme-toggle");
+      const icon = document.getElementById("theme-toggle-icon");
+      const html = document.documentElement;
+
+      function applyTheme(theme: string) {
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+      }
+
+      // Set initial icon based on current theme
+      const current = html.getAttribute("data-theme") ?? "light";
+      if (icon) icon.textContent = current === "dark" ? "☀️" : "🌙";
+
+      btn?.addEventListener("click", () => {
+        const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        applyTheme(next);
+      });
+
+      // Sync with OS preference changes (when no manual override is stored)
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (!localStorage.getItem("theme")) {
+            applyTheme(e.matches ? "dark" : "light");
+          }
+        });
+    </script>
   </body>
 </html>
