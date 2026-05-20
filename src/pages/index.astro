@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/home.css";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
@@ -30,21 +31,3 @@ const posts = (await getCollection("blog")).sort(
     }
   </section>
 </BaseLayout>
-
-<style>
-  .page-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .page-subtitle {
-    color: var(--color-text-muted);
-    margin-bottom: 2rem;
-  }
-
-  .empty-message {
-    color: var(--color-text-dimmed);
-  }
-</style>
