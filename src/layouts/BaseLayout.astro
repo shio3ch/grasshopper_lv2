@@ -1,4 +1,6 @@
 ---
+import "../styles/base.css";
+
 interface Props {
   title: string;
   description?: string;
@@ -15,52 +17,30 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
     <meta name="description" content={description} />
     <title>{title} | grasshopper</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
-        line-height: 1.6;
-        color: #1a1a1a;
-        background: #f9f9f9;
-      }
-
-      a {
-        color: #0070f3;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      main {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-      }
-    </style>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = stored ?? (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body>
-    <header
-      style="background:#fff;border-bottom:1px solid #eaeaea;padding:1rem;"
-    >
-      <div
-        style="max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;"
-      >
-        <a href="/" style="font-size:1.4rem;font-weight:700;color:#1a1a1a;"
-          >🦗 grasshopper</a
-        >
-        <nav>
-          <a href="/" style="margin-left:1.5rem;color:#555;">ホーム</a>
-        </nav>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="/" class="site-header__logo">🦗 grasshopper</a>
+        <div class="site-header__nav">
+          <a href="/">ホーム</a>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="ダークモードの切り替え"
+            title="ダークモードの切り替え"
+          >
+            <span id="theme-toggle-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -68,10 +48,38 @@ const { title, description = "grasshopper - tech news blog" } = Astro.props;
       <slot />
     </main>
 
-    <footer
-      style="text-align:center;padding:2rem 1rem;color:#888;font-size:0.875rem;border-top:1px solid #eaeaea;margin-top:4rem;"
-    >
+    <footer class="site-footer">
       <p>&copy; {new Date().getFullYear()} grasshopper. All rights reserved.</p>
     </footer>
+
+    <script>
+      const btn = document.getElementById("theme-toggle");
+      const icon = document.getElementById("theme-toggle-icon");
+      const html = document.documentElement;
+
+      function applyTheme(theme: string) {
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+      }
+
+      // Set initial icon based on current theme
+      const current = html.getAttribute("data-theme") ?? "light";
+      if (icon) icon.textContent = current === "dark" ? "☀️" : "🌙";
+
+      btn?.addEventListener("click", () => {
+        const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        applyTheme(next);
+      });
+
+      // Sync with OS preference changes (when no manual override is stored)
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (!localStorage.getItem("theme")) {
+            applyTheme(e.matches ? "dark" : "light");
+          }
+        });
+    </script>
   </body>
 </html>
