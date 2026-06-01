@@ -42,7 +42,14 @@
   padding: 0.2rem 0.6rem;
   border-radius: 9999px;
   font-size: 0.8rem;
+  text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.post-card__tag:hover,
+.post-card__tag:focus-visible {
+  background: var(--color-link);
+  color: var(--color-bg);
 }
 
 .post-card__more {

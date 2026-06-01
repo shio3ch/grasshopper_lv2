@@ -1,5 +1,6 @@
 ---
 import { formatDate, toISODateString } from "../utils/formatDate";
+import { getTagPath } from "../utils/tagUrl";
 import "../styles/post-card.css";
 
 interface Props {
@@ -25,7 +26,7 @@ const { title, description, pubDate, tags = [], slug } = Astro.props;
     tags.length > 0 && (
       <div class="post-card__tags">
         {tags.map((tag) => (
-          <span class="post-card__tag">#{tag}</span>
+          <a href={getTagPath(tag)} class="post-card__tag">#{tag}</a>
         ))}
       </div>
     )
