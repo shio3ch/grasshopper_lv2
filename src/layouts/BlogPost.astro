@@ -2,6 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import "../styles/blog-post.css";
 import { formatDate, toISODateString } from "../utils/formatDate";
+import { getTagPath } from "../utils/tagUrl";
 
 interface Props {
   title: string;
@@ -44,7 +45,7 @@ const {
         tags.length > 0 && (
           <div class="article-header__tags">
             {tags.map((tag) => (
-              <span class="article-header__tag">#{tag}</span>
+              <a href={getTagPath(tag)} class="article-header__tag">#{tag}</a>
             ))}
           </div>
         )

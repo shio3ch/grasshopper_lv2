@@ -13,3 +13,18 @@
 .empty-message {
   color: var(--color-text-dimmed);
 }
+
+.tag-filter-label {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.tag-filter-actions {
+  margin: -1rem 0 2rem;
+}
+
+.tag-filter-actions a {
+  color: var(--color-link);
+  font-weight: 600;
+}
