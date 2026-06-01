@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/home.css";
+import ArchiveCalendar from "../../components/ArchiveCalendar.astro";
+import { getCollection } from "astro:content";
+import {
+  buildArchiveMonths,
+  formatArchiveMonthLabel,
+  getArchiveMonthPath,
+} from "../../utils/archiveCalendar";
+
+const posts = await getCollection("blog");
+const months = buildArchiveMonths(posts);
+const latestMonth = months[0];
+---
+
+<BaseLayout title="アーカイブ" description="月別・日別の記事アーカイブ">
+  <section>
+    <p class="tag-filter-label">記事アーカイブ</p>
+    <h1 class="page-title">カレンダー</h1>
+    <p class="page-subtitle">
+      月ごとの記事数と、記事がある日だけを強調したカレンダーです。
+    </p>
+
+    {
+      latestMonth ? (
+        <>
+          <ArchiveCalendar month={latestMonth} />
+
+          <section class="archive-months" aria-labelledby="archive-months-title">
+            <h2 id="archive-months-title" class="section-title">月別アーカイブ</h2>
+            <div class="archive-months__list">
+              {months.map((month) => (
+                <a class="archive-months__item" href={getArchiveMonthPath(month.year, month.month)}>
+                  <span>{formatArchiveMonthLabel(month.year, month.month)}</span>
+                  <span>{month.count}件</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        </>
+      ) : (
+        <p class="empty-message">記事がありません。</p>
+      )
+    }
+  </section>
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+import {
+  buildMonthCalendar,
+  formatArchiveMonthLabel,
+  type ArchiveMonth,
+} from "../utils/archiveCalendar";
+
+interface Props {
+  month: ArchiveMonth;
+}
+
+const { month } = Astro.props;
+const cells = buildMonthCalendar(month);
+const calendarRows = Array.from({ length: Math.ceil(cells.length / 7) }, (_, index) =>
+  cells.slice(index * 7, index * 7 + 7),
+);
+const weekDays = ["日", "月", "火", "水", "木", "金", "土"];
+const monthLabel = formatArchiveMonthLabel(month.year, month.month);
+---
+
+<section class="archive-calendar" aria-labelledby={`archive-${month.key}`}>
+  <div class="archive-calendar__header">
+    <h2 id={`archive-${month.key}`} class="archive-calendar__title">
+      {monthLabel}
+    </h2>
+    <p class="archive-calendar__count">{month.count}件の記事</p>
+  </div>
+
+  <table class="archive-calendar__table">
+    <caption class="archive-calendar__caption">
+      {monthLabel}の記事カレンダー
+    </caption>
+    <thead>
+      <tr>
+        {weekDays.map((day) => <th scope="col">{day}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        calendarRows.map((row) => (
+          <tr>
+            {row.map((cell) => (
+              <td
+                class:list={[
+                  "archive-calendar__cell",
+                  !cell.isCurrentMonth && "archive-calendar__cell--empty",
+                  cell.hasPosts && "archive-calendar__cell--has-posts",
+                ]}
+                aria-hidden={!cell.isCurrentMonth ? "true" : undefined}
+              >
+                {cell.href ? (
+                  <a href={cell.href} aria-label={`${cell.date} の記事 ${cell.count}件`}>
+                    <span class="archive-calendar__day">{cell.day}</span>
+                    <span class="archive-calendar__badge">{cell.count}件</span>
+                  </a>
+                ) : cell.date && cell.day ? (
+                  <time class="archive-calendar__day" datetime={cell.date}>{cell.day}</time>
+                ) : (
+                  <span aria-hidden="true">&nbsp;</span>
+                )}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</section>

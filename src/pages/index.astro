@@ -13,6 +13,9 @@ const posts = (await getCollection("blog")).sort(
   <section>
     <h1 class="page-title">技術ニュース</h1>
     <p class="page-subtitle">最新の技術トレンドやニュースをお届けします。</p>
+    <p class="home-archive-link">
+      <a href="/archive/">カレンダーアーカイブを見る &rarr;</a>
+    </p>
 
     {
       posts.length === 0 ? (
