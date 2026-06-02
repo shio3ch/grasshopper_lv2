@@ -10,13 +10,19 @@ const posts = (await getCollection("blog")).sort(
 ---
 
 <BaseLayout title="ホーム" description="grasshopper - tech news blog">
-  <section>
-    <h1 class="page-title">技術ニュース</h1>
-    <p class="page-subtitle">最新の技術トレンドやニュースをお届けします。</p>
+  <section class="home-hero" aria-labelledby="home-title">
+    <p class="home-hero__eyebrow">Mint lounge news bar</p>
+    <h1 id="home-title" class="page-title">良い情報に、会えて嬉しい。</h1>
+    <p class="page-subtitle">
+      カクテル「グラスホッパー」のやわらかなミントと、深い木目のラウンジ感で、
+      技術ニュースを静かに読みやすく届けます。
+    </p>
     <p class="home-archive-link">
       <a href="/archive/">カレンダーアーカイブを見る &rarr;</a>
     </p>
+  </section>
 
+  <section class="post-list" aria-label="最新記事">
     {
       posts.length === 0 ? (
         <p class="empty-message">記事がありません。</p>
