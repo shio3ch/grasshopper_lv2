@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/home.css";
 import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
-import { normalizeTagParam } from "../../utils/tagUrl";
+import { getTagRouteParam, normalizeTagParam } from "../../utils/tagUrl";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   ).sort((a, b) => a.localeCompare(b, "ja"));
 
   return tags.map((tag) => ({
-    params: { tag: encodeURIComponent(tag) },
+    params: { tag: getTagRouteParam(tag) },
   }));
 }
 
