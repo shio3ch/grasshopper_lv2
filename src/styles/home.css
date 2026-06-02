@@ -28,3 +28,172 @@
   color: var(--color-link);
   font-weight: 600;
 }
+
+.home-archive-link {
+  margin: -1rem 0 2rem;
+}
+
+.home-archive-link a {
+  color: var(--color-link);
+  font-weight: 600;
+}
+
+.section-title {
+  color: var(--color-text);
+  font-size: 1.15rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.archive-calendar {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.archive-calendar__header {
+  align-items: baseline;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.archive-calendar__title {
+  color: var(--color-text);
+  font-size: 1.25rem;
+}
+
+.archive-calendar__count {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.archive-calendar__table {
+  border-collapse: separate;
+  border-spacing: 0.35rem;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.archive-calendar__caption {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.archive-calendar__table th {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-bottom: 0.15rem;
+  text-align: center;
+}
+
+.archive-calendar__cell {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.4rem;
+  color: var(--color-text-dimmed);
+  height: clamp(2.5rem, 9vw, 4rem);
+  min-width: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.archive-calendar__cell--empty {
+  background: transparent;
+  border-color: transparent;
+}
+
+.archive-calendar__cell--has-posts {
+  background: var(--color-tag-bg);
+  border-color: var(--color-link);
+}
+
+.archive-calendar__cell a,
+.archive-calendar__cell time {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.archive-calendar__cell a {
+  color: var(--color-tag-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.archive-calendar__cell a:hover,
+.archive-calendar__cell a:focus-visible {
+  background: var(--color-link);
+  border-radius: 0.35rem;
+  color: var(--color-bg);
+}
+
+.archive-calendar__day {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.archive-calendar__badge {
+  font-size: 0.7rem;
+  line-height: 1.2;
+  margin-top: 0.2rem;
+}
+
+.archive-months__list {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.archive-months__item {
+  align-items: center;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  display: flex;
+  font-weight: 600;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+}
+
+.archive-months__item span:last-child {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.archive-months__item:hover,
+.archive-months__item:focus-visible {
+  border-color: var(--color-link);
+  text-decoration: none;
+}
+
+.archive-posts {
+  margin-top: 2rem;
+}
+
+@media (max-width: 520px) {
+  .archive-calendar {
+    padding: 0.75rem;
+  }
+
+  .archive-calendar__table {
+    border-spacing: 0.25rem;
+  }
+
+  .archive-calendar__day {
+    font-size: 0.85rem;
+  }
+}

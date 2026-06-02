@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import "../../../../styles/home.css";
+import ArchiveCalendar from "../../../../components/ArchiveCalendar.astro";
+import PostCard from "../../../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import {
+  buildArchiveMonths,
+  formatArchiveMonthLabel,
+  type ArchiveMonth,
+} from "../../../../utils/archiveCalendar";
+import { toISODateString } from "../../../../utils/formatDate";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const months = buildArchiveMonths(posts);
+
+  return months.map((month) => ({
+    params: {
+      year: String(month.year),
+      month: String(month.month).padStart(2, "0"),
+    },
+    props: { archiveMonth: month },
+  }));
+}
+
+interface Props {
+  archiveMonth: ArchiveMonth;
+}
+
+const { archiveMonth } = Astro.props;
+const monthPrefix = archiveMonth.key;
+const posts = (await getCollection("blog"))
+  .filter((post) => toISODateString(post.data.pubDate).startsWith(monthPrefix))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`${formatArchiveMonthLabel(archiveMonth.year, archiveMonth.month)}のアーカイブ`}
+  description={`${formatArchiveMonthLabel(archiveMonth.year, archiveMonth.month)}の記事一覧`}
+>
+  <section>
+    <p class="tag-filter-label">月別アーカイブ</p>
+    <h1 class="page-title">{formatArchiveMonthLabel(archiveMonth.year, archiveMonth.month)}</h1>
+    <p class="page-subtitle">この月の記事は {archiveMonth.count} 件です。</p>
+    <p class="tag-filter-actions">
+      <a href="/archive/">アーカイブへ戻る</a>
+    </p>
+
+    <ArchiveCalendar month={archiveMonth} />
+
+    <section class="archive-posts" aria-labelledby="archive-posts-title">
+      <h2 id="archive-posts-title" class="section-title">この月の記事</h2>
+      {
+        posts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            slug={post.slug}
+          />
+        ))
+      }
+    </section>
+  </section>
+</BaseLayout>
