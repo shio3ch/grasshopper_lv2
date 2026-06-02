@@ -1,32 +1,55 @@
 .post-card {
-  background: var(--color-bg-card);
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(169, 232, 200, 0.1)),
+    var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  border-radius: 1.2rem;
+  padding: 1.35rem 1.45rem;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.post-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.32rem;
+  background: linear-gradient(180deg, var(--color-mint), var(--color-gold));
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(58, 38, 27, 0.14);
 }
 
 .post-card__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 0.55rem;
 }
 
 .post-card__title-link {
   color: var(--color-text);
 }
 
+.post-card__title-link:hover {
+  color: var(--color-link-strong);
+}
+
 .post-card__meta {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: 0.86rem;
   margin-bottom: 0.75rem;
 }
 
 .post-card__description {
   color: var(--color-text-subtle);
   margin-bottom: 1rem;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
 }
 
 .post-card__tags {
@@ -39,21 +62,35 @@
 .post-card__tag {
   background: var(--color-tag-bg);
   color: var(--color-tag-text);
-  padding: 0.2rem 0.6rem;
+  padding: 0.24rem 0.68rem;
+  border: 1px solid rgba(8, 127, 111, 0.12);
   border-radius: 9999px;
   font-size: 0.8rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .post-card__tag:hover,
 .post-card__tag:focus-visible {
-  background: var(--color-link);
-  color: var(--color-bg);
+  background: var(--color-link-strong);
+  color: var(--color-mint-cream);
+  border-color: var(--color-link-strong);
+  text-decoration: none;
 }
 
 .post-card__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   font-size: 0.9rem;
-  color: var(--color-link);
-  font-weight: 600;
+  color: var(--color-link-strong);
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .post-card {
+    border-radius: 1rem;
+    padding: 1.15rem 1.1rem 1.15rem 1.25rem;
+  }
 }

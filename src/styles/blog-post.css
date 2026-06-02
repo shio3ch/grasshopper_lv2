@@ -1,31 +1,69 @@
 .article-header {
+  position: relative;
+  overflow: hidden;
   margin-bottom: 2rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(135deg, rgba(169, 232, 200, 0.25), rgba(255, 252, 246, 0.68)),
+    var(--color-bg-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.article-header::after {
+  content: "";
+  position: absolute;
+  right: -2.8rem;
+  top: -3.8rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 9999px;
+  background: linear-gradient(145deg, rgba(169, 232, 200, 0.64), rgba(194, 146, 74, 0.3));
+  opacity: 0.7;
 }
 
 .article-header__title {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.85rem;
   color: var(--color-text);
 }
 
 .article-header__meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  align-items: center;
   color: var(--color-text-muted);
   font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
 }
 
 .article-header__updated,
 .article-header__author {
-  margin-left: 1rem;
+  margin-left: 0;
 }
 
 .prose {
-  line-height: 1.8;
+  line-height: 1.85;
+  font-size: 1.02rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1.2rem;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  box-shadow: var(--shadow-card);
 }
 
 .article-header__tags {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -34,17 +72,21 @@
 .article-header__tag {
   background: var(--color-tag-bg);
   color: var(--color-tag-text);
-  padding: 0.2rem 0.6rem;
+  padding: 0.24rem 0.68rem;
+  border: 1px solid rgba(8, 127, 111, 0.12);
   border-radius: 9999px;
   font-size: 0.8rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .article-header__tag:hover,
 .article-header__tag:focus-visible {
-  background: var(--color-link);
-  color: var(--color-bg);
+  background: var(--color-link-strong);
+  color: var(--color-mint-cream);
+  border-color: var(--color-link-strong);
+  text-decoration: none;
 }
 
 .article-footer {
@@ -53,17 +95,30 @@
   border-top: 1px solid var(--color-border);
   transition: border-color 0.2s ease;
 }
+
+.article-footer a {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  color: var(--color-link-strong);
+  background: var(--color-mint-soft);
+  border: 1px solid var(--color-border);
+  padding: 0.55rem 0.95rem;
+  font-weight: 800;
+}
+
 .prose h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 2rem 0 1rem;
+  font-size: 1.55rem;
+  font-weight: 850;
+  margin: 2.1rem 0 1rem;
   color: var(--color-text);
+  line-height: 1.35;
 }
 
 .prose h3 {
   font-size: 1.25rem;
-  font-weight: 700;
-  margin: 1.5rem 0 0.75rem;
+  font-weight: 850;
+  margin: 1.65rem 0 0.75rem;
   color: var(--color-text);
 }
 
@@ -77,14 +132,15 @@
 }
 
 .prose li {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .prose pre {
-  background: #1e1e1e;
-  color: #d4d4d4;
+  background: #1f1713;
+  color: #efe7d8;
+  border: 1px solid rgba(169, 232, 200, 0.16);
   padding: 1rem 1.25rem;
-  border-radius: 0.5rem;
+  border-radius: 0.85rem;
   overflow-x: auto;
   margin: 1rem 0;
   font-size: 0.9rem;
@@ -93,15 +149,29 @@
 .prose code:not(pre code) {
   background: var(--color-code-inline-bg);
   padding: 0.15rem 0.4rem;
-  border-radius: 0.25rem;
+  border-radius: 0.3rem;
   font-size: 0.9em;
   transition: background-color 0.2s ease;
 }
 
 .prose a {
-  color: var(--color-link);
+  color: var(--color-link-strong);
+  font-weight: 700;
 }
 
 .prose strong {
-  font-weight: 700;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .article-header {
+    padding: 1.25rem;
+    border-radius: 1.1rem;
+  }
+
+  .prose {
+    padding: 1.1rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+  }
 }
