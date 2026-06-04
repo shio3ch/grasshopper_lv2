@@ -147,19 +147,17 @@ main {
 }
 
 .site-header__mark {
-  display: grid;
+  display: block;
   width: 2.35rem;
   height: 2.35rem;
-  place-items: center;
-  border: 1px solid rgba(169, 232, 200, 0.68);
   border-radius: 9999px;
-  color: #203329;
-  background:
-    radial-gradient(circle at 35% 28%, #f6fff8 0 18%, transparent 19%),
-    linear-gradient(145deg, var(--color-mint), #d9f7bc 62%, #c2924a 130%);
+  border: 1px solid rgba(169, 232, 200, 0.68);
   box-shadow: 0 8px 22px rgba(169, 232, 200, 0.2);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  background-image: url('/logo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
 }
 
 .site-header__logo:hover {
@@ -233,7 +231,6 @@ main {
   .site-header__mark {
     width: 2rem;
     height: 2rem;
-    font-size: 0.65rem;
   }
 
   .site-header__nav {
