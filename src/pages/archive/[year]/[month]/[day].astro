@@ -6,9 +6,10 @@ import { getCollection } from "astro:content";
 import {
   buildArchiveMonths,
   formatArchiveMonthLabel,
+  getPostsForArchiveDate,
   getArchiveMonthPath,
 } from "../../../../utils/archiveCalendar";
-import { formatDate, toISODateString } from "../../../../utils/formatDate";
+import { formatDate } from "../../../../utils/formatDate";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -36,9 +37,7 @@ const [yearText, monthText] = date.split("-");
 const year = Number(yearText);
 const month = Number(monthText);
 const labelDate = new Date(`${date}T00:00:00.000Z`);
-const posts = (await getCollection("blog"))
-  .filter((post) => toISODateString(post.data.pubDate) === date)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = getPostsForArchiveDate(await getCollection("blog"), date);
 ---
 
 <BaseLayout title={`${formatDate(labelDate)}の記事`} description={`${formatDate(labelDate)}の記事一覧`}>

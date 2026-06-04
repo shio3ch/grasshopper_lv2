@@ -2,8 +2,10 @@ import {
   buildArchiveMonths,
   buildMonthCalendar,
   formatArchiveMonthLabel,
+  getLatestArchiveDate,
   getArchiveDayPath,
   getArchiveMonthPath,
+  getPostsForArchiveDate,
 } from "../utils/archiveCalendar";
 
 type TestPost = {
@@ -83,5 +85,15 @@ describe("archiveCalendar", () => {
     expect(getArchiveMonthPath(2026, 5)).toBe("/archive/2026/05/");
     expect(getArchiveDayPath("2026-05-07")).toBe("/archive/2026/05/07/");
     expect(formatArchiveMonthLabel(2026, 5)).toBe("2026年5月");
+  });
+
+  it("finds the latest archive date and returns only that day's posts in descending order", () => {
+    expect(getLatestArchiveDate(posts)).toBe("2026-05-30");
+    expect(getLatestArchiveDate([])).toBeNull();
+    expect(getPostsForArchiveDate(posts, "2026-05-30").map((item) => item.slug)).toEqual([
+      "2026/05/30/a",
+      "2026/05/30/b",
+    ]);
+    expect(getPostsForArchiveDate(posts, "2026-05-29")).toEqual([]);
   });
 });

@@ -6,6 +6,19 @@ export type ArchivePostLike = {
   };
 };
 
+export function sortPostsByPubDateDesc<T extends ArchivePostLike>(posts: T[]): T[] {
+  return [...posts].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+}
+
+export function getLatestArchiveDate(posts: ArchivePostLike[]): string | null {
+  const [latestPost] = sortPostsByPubDateDesc(posts);
+  return latestPost ? toISODateString(latestPost.data.pubDate) : null;
+}
+
+export function getPostsForArchiveDate<T extends ArchivePostLike>(posts: T[], date: string): T[] {
+  return sortPostsByPubDateDesc(posts).filter((post) => toISODateString(post.data.pubDate) === date);
+}
+
 export type ArchiveDay = {
   date: string;
   day: number;
