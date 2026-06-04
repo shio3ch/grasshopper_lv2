@@ -9,6 +9,7 @@ npm run dev        # 開発サーバー起動 (http://localhost:4321)
 npm run build      # Cloudflare Pages向け静的ビルド
 npm run preview    # ビルド結果のプレビュー
 npm test           # Jestでテスト実行
+npm run test:e2e   # Playwright Chromiumを導入してE2Eを実行
 npm run test:watch # テストのウォッチモード
 ```
 

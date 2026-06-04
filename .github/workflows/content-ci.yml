@@ -6,6 +6,10 @@ on:
       - main
     paths:
       - "src/**"
+      - "e2e/**"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.ts"
 
 jobs:
   test-and-build:
@@ -28,6 +32,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Run E2E tests
+        run: npm run test:e2e
 
       - name: Build
         run: npm run build
