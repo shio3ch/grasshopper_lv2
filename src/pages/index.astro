@@ -1,41 +1,76 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/home.css";
+import ArchiveCalendar from "../components/ArchiveCalendar.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
+import {
+  buildArchiveMonths,
+  formatArchiveMonthLabel,
+  getArchiveDayPath,
+  getArchiveMonthPath,
+  getLatestArchiveDate,
+  getPostsForArchiveDate,
+} from "../utils/archiveCalendar";
+import { formatDate } from "../utils/formatDate";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const allPosts = await getCollection("blog");
+const archiveMonths = buildArchiveMonths(allPosts);
+const latestMonth = archiveMonths[0];
+const latestDate = getLatestArchiveDate(allPosts);
+const latestPosts = latestDate ? getPostsForArchiveDate(allPosts, latestDate) : [];
+const latestDateLabel = latestDate ? formatDate(new Date(`${latestDate}T00:00:00.000Z`)) : null;
 ---
 
 <BaseLayout title="ホーム" description="grasshopper - tech news blog">
-  <section class="home-hero" aria-labelledby="home-title">
-    <p class="home-hero__eyebrow">Mint lounge news bar</p>
-    <h1 id="home-title" class="page-title">良い情報に、会えて嬉しい。</h1>
-    <p class="page-subtitle">
-      カクテル「グラスホッパー」のやわらかなミントと、深い木目のラウンジ感で、
-      技術ニュースを静かに読みやすく届けます。
-    </p>
-    <p class="home-archive-link">
-      <a href="/archive/">カレンダーアーカイブを見る &rarr;</a>
-    </p>
-  </section>
-
-  <section class="post-list" aria-label="最新記事">
+  <section aria-labelledby="home-title">
     {
-      posts.length === 0 ? (
-        <p class="empty-message">記事がありません。</p>
+      latestDate && latestDateLabel ? (
+        <>
+          <p class="tag-filter-label">最新日を表示中</p>
+          <h1 id="home-title" class="page-title">{latestDateLabel}</h1>
+          <p class="page-subtitle">
+            最新日の記事をトップにまとめています。気になるタグは日付を跨いでそのまま追えます。
+          </p>
+          <div class="home-actions">
+            <a href={getArchiveDayPath(latestDate)}>この日の記事ページへ</a>
+            <a href="/archive/">カレンダー全体を見る</a>
+            {
+              latestMonth && (
+                <a href={getArchiveMonthPath(latestMonth.year, latestMonth.month)}>
+                  {formatArchiveMonthLabel(latestMonth.year, latestMonth.month)}を見る
+                </a>
+              )
+            }
+          </div>
+
+          {
+            latestMonth && (
+              <section class="home-calendar" aria-labelledby="home-calendar-title">
+                <h2 id="home-calendar-title" class="section-title">最新月のカレンダー</h2>
+                <ArchiveCalendar month={latestMonth} />
+              </section>
+            )
+          }
+
+          <section class="post-list" aria-labelledby="latest-posts-title">
+            <div class="home-section-heading">
+              <h2 id="latest-posts-title" class="section-title">{latestDateLabel}の記事</h2>
+              <p class="home-section-count">{latestPosts.length}件</p>
+            </div>
+            {latestPosts.map((post) => (
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                slug={post.slug}
+              />
+            ))}
+          </section>
+        </>
       ) : (
-        posts.map((post) => (
-          <PostCard
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            tags={post.data.tags}
-            slug={post.slug}
-          />
-        ))
+        <p class="empty-message">記事がありません。</p>
       )
     }
   </section>
