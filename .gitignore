@@ -27,3 +27,7 @@ pnpm-debug.log*
 
 # Claude Code action transcript
 output.txt
+
+# Playwright
+playwright-report/
+test-results/
