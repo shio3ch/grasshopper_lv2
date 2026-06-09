@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#302017" />
+    <title>オフライン | grasshopper</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4efe7;
+        --card: rgba(255, 252, 246, 0.94);
+        --text: #241a14;
+        --muted: #6d5a4c;
+        --accent: #087f6f;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #15100d;
+          --card: rgba(35, 25, 19, 0.94);
+          --text: #f4eadc;
+          --muted: #c3b19d;
+          --accent: #9ee8c5;
+        }
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 12% 0%, rgba(169, 232, 200, 0.35), transparent 28rem), var(--bg);
+      }
+
+      main {
+        width: min(100%, 32rem);
+        padding: 2rem;
+        border-radius: 1.25rem;
+        background: var(--card);
+        box-shadow: 0 20px 60px rgba(58, 38, 27, 0.13);
+      }
+
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 9999px;
+      }
+
+      h1 {
+        margin: 1rem 0 0.5rem;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/icons/icon-192.png" alt="" />
+      <h1>オフラインです</h1>
+      <p>通信が戻ったら再読み込みしてください。以前開いたページや静的アセットはキャッシュから読める場合があります。</p>
+      <a href="/">ホームへ戻る</a>
+    </main>
+  </body>
+</html>
