@@ -25,6 +25,8 @@ npx jest --config jest.config.cjs src/__tests__/formatDate.test.ts
 ### コンテンツ管理
 
 - ブログ記事は `src/content/blog/` 以下に Markdown ファイルとして配置
+- ローカル開発ではリポジトリ内の `src/content/blog/` をそのまま使う
+- GitHub Actions の deploy workflow では、repo variable `GH_CONTENT_REPOSITORY` が設定されている場合に外部コンテンツ repo を `src/content/blog/` へ checkout してからビルドする
 - フロントマター必須フィールド: `title`, `description`, `pubDate`
 - オプションフィールド: `updatedDate`, `tags`（配列）, `author`（デフォルト: `"grasshopper"`）
 - コンテンツコレクションのスキーマは `src/content/config.ts` で定義
@@ -52,6 +54,7 @@ BaseLayout.astro      ← HTML shell、ヘッダー・フッター・グロー�
 
 ## 運用方針
 
-- 記事は Hermes ジョブが Discord 技術トピックをもとに毎日生成し、外部から push して運用する。
+- 記事は Hermes ジョブが Discord 技術トピックをもとに毎日生成し、外部 content repo へ push して運用できる
+- app repo 側の deploy は `repository_dispatch` または `workflow_dispatch` で起動できる。詳細は `docs/external-content-repo.md` を参照
 - `daily-content-generation.yml` は無効化済み（`.disabled` 拡張子）。記事生成は Hermes 側で管理。
 - このリポジトリへの実装変更は Hermes/Codex が Claude Code を統制して行う。

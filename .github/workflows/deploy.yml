@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "public/**"
+      - "e2e/**"
+      - "package.json"
+      - "package-lock.json"
+      - "astro.config.*"
+      - "tsconfig.json"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [content-updated]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout app repo
+        uses: actions/checkout@v4
+
+      - name: Checkout external content repo
+        if: vars.GH_CONTENT_REPOSITORY != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.GH_CONTENT_REPOSITORY }}
+          token: ${{ secrets.CONTENT_REPO_TOKEN || github.token }}
+          path: src/content/blog
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler pages deploy dist --project-name "${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}"
