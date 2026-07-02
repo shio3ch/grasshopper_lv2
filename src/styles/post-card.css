@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(169, 232, 200, 0.1)),
+    linear-gradient(135deg, var(--color-card-overlay-start), var(--color-card-overlay-end)),
     var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 1.2rem;
@@ -36,6 +36,13 @@
   color: var(--color-text);
 }
 
+/* カード全体をクリック可能にする（stretched link） */
+.post-card__title-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
 .post-card__title-link:hover {
   color: var(--color-link-strong);
 }
@@ -56,10 +63,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
 }
 
 .post-card__tag {
+  position: relative;
+  z-index: 1;
   background: var(--color-tag-bg);
   color: var(--color-tag-text);
   padding: 0.24rem 0.68rem;
@@ -79,18 +87,50 @@
   text-decoration: none;
 }
 
-.post-card__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.9rem;
-  color: var(--color-link-strong);
-  font-weight: 800;
+.post-card--featured {
+  padding: 1.75rem 1.85rem;
+}
+
+.post-card--featured .post-card__title {
+  font-size: clamp(1.45rem, 4vw, 1.95rem);
+  line-height: 1.3;
+}
+
+.post-card--featured .post-card__description {
+  font-size: 1.02rem;
+}
+
+.post-card--compact {
+  padding: 1rem 1.1rem 1rem 1.3rem;
+  border-radius: 1rem;
+}
+
+.post-card--compact .post-card__title {
+  font-size: 1.08rem;
+  margin-bottom: 0.4rem;
+}
+
+.post-card--compact .post-card__meta {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-card--compact .post-card__description {
+  font-size: 0.88rem;
+  margin-bottom: 0.7rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 @media (max-width: 640px) {
   .post-card {
     border-radius: 1rem;
     padding: 1.15rem 1.1rem 1.15rem 1.25rem;
+  }
+
+  .post-card--featured {
+    padding: 1.35rem 1.25rem 1.35rem 1.4rem;
   }
 }
