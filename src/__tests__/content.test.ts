@@ -5,6 +5,8 @@ import { z } from "zod";
 
 // NOTE: src/content/config.ts の blog コレクションのスキーマと同期させること
 // （config.ts は astro:content に依存するため Jest から直接 import できない）
+// 本スキーマは config.ts より意図的に厳格（min(1) の非空制約）。緩める場合は
+// docs/superpowers/specs/2026-07-02-test-enrichment-design.md を参照。
 const blogSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
