@@ -41,18 +41,6 @@ function loadPosts(): BlogPostFile[] {
 
 const posts = loadPosts();
 
-function findDuplicates(values: string[]): string[] {
-  const seen = new Set<string>();
-  const duplicates = new Set<string>();
-  for (const value of values) {
-    if (seen.has(value)) {
-      duplicates.add(value);
-    }
-    seen.add(value);
-  }
-
-  return Array.from(duplicates);
-}
 
 describe("ブログ記事のコンテンツ検証", () => {
   test("記事が 1 件以上存在する", () => {
@@ -111,12 +99,38 @@ describe("ブログ記事のコンテンツ検証", () => {
   });
 
   test("ファイル名が重複しない", () => {
-    const basenames = posts.map((post) => path.basename(post.relativePath));
-    expect(findDuplicates(basenames)).toEqual([]);
+    const seenBasenames = new Map<string, string>(); // basename → 最初に見たパス
+    const violations: string[] = [];
+    for (const post of posts) {
+      const basename = path.basename(post.relativePath);
+      const firstPath = seenBasenames.get(basename);
+      if (firstPath) {
+        violations.push(
+          `${post.relativePath}: ファイル名 ${basename} が ${firstPath} と重複する`,
+        );
+      } else {
+        seenBasenames.set(basename, post.relativePath);
+      }
+    }
+
+    expect(violations).toEqual([]);
   });
 
   test("タイトルが重複しない", () => {
-    const titles = posts.map((post) => String(post.frontmatter.title ?? ""));
-    expect(findDuplicates(titles)).toEqual([]);
+    const seenTitles = new Map<string, string>(); // title → 最初に見たパス
+    const violations: string[] = [];
+    for (const post of posts) {
+      const title = String(post.frontmatter.title ?? "");
+      const firstPath = seenTitles.get(title);
+      if (firstPath) {
+        violations.push(
+          `${post.relativePath}: タイトル "${title}" が ${firstPath} と重複する`,
+        );
+      } else {
+        seenTitles.set(title, post.relativePath);
+      }
+    }
+
+    expect(violations).toEqual([]);
   });
 });
