@@ -20,6 +20,7 @@ const latestMonth = archiveMonths[0];
 const latestDate = getLatestArchiveDate(allPosts);
 const latestPosts = latestDate ? getPostsForArchiveDate(allPosts, latestDate) : [];
 const latestDateLabel = latestDate ? formatDate(new Date(`${latestDate}T00:00:00.000Z`)) : null;
+const [featuredPost, ...restPosts] = latestPosts;
 ---
 
 <BaseLayout title="ホーム" description="grasshopper - tech news blog">
@@ -44,6 +45,37 @@ const latestDateLabel = latestDate ? formatDate(new Date(`${latestDate}T00:00:00
             }
           </div>
 
+          <section class="post-list" aria-labelledby="latest-posts-title">
+            <div class="home-section-heading">
+              <h2 id="latest-posts-title" class="section-title">{latestDateLabel}の記事</h2>
+              <p class="home-section-count">{latestPosts.length}件</p>
+            </div>
+            {featuredPost && (
+              <PostCard
+                title={featuredPost.data.title}
+                description={featuredPost.data.description}
+                pubDate={featuredPost.data.pubDate}
+                tags={featuredPost.data.tags}
+                slug={featuredPost.slug}
+                variant="featured"
+              />
+            )}
+            {restPosts.length > 0 && (
+              <div class="post-list__grid">
+                {restPosts.map((post) => (
+                  <PostCard
+                    title={post.data.title}
+                    description={post.data.description}
+                    pubDate={post.data.pubDate}
+                    tags={post.data.tags}
+                    slug={post.slug}
+                    variant="compact"
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+
           {
             latestMonth && (
               <section class="home-calendar" aria-labelledby="home-calendar-title">
@@ -52,22 +84,6 @@ const latestDateLabel = latestDate ? formatDate(new Date(`${latestDate}T00:00:00
               </section>
             )
           }
-
-          <section class="post-list" aria-labelledby="latest-posts-title">
-            <div class="home-section-heading">
-              <h2 id="latest-posts-title" class="section-title">{latestDateLabel}の記事</h2>
-              <p class="home-section-count">{latestPosts.length}件</p>
-            </div>
-            {latestPosts.map((post) => (
-              <PostCard
-                title={post.data.title}
-                description={post.data.description}
-                pubDate={post.data.pubDate}
-                tags={post.data.tags}
-                slug={post.slug}
-              />
-            ))}
-          </section>
         </>
       ) : (
         <p class="empty-message">記事がありません。</p>
